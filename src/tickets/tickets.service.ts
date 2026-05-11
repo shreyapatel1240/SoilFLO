@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import { CreateTicketsDto } from './dto/create-tickets.dto'
-import { TicketResponseDto } from './dto/ticket-response.dto'
+import { PaginationMeta, TicketResponseDto } from './dto/ticket-response.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Truck } from 'src/trucks/entities/truck.entity'
 import { Repository } from 'typeorm/browser/repository/Repository.js'
@@ -14,6 +14,7 @@ import { SiteTicketCounterRepository } from './repositories/site-ticket-counter-
 import { Ticket } from './entities/ticket.entity'
 import { SiteTicketCounter } from './entities/site-ticket-counter.entity'
 import { DataSource, In } from 'typeorm'
+import { GetTicketsQueryDto } from './dto/get-tickets-query.dto'
 
 @Injectable()
 export class TicketsService {
@@ -107,5 +108,23 @@ export class TicketsService {
 
       return withRelations.map(TicketResponseDto.fromEntity);
     });
+  }
+
+  async findAll(
+    query: GetTicketsQueryDto,
+  ): Promise<{ data: TicketResponseDto[]; meta: PaginationMeta }> {
+    const [tickets, total] = await this.ticketsRepository.findWithFilters(query);
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 50;
+
+    return {
+      data: tickets.map(TicketResponseDto.fromEntity),
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 }

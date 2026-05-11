@@ -1,8 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common'
-import { ApiCreatedResponse, ApiNotFoundResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Get, Post, Query } from '@nestjs/common'
+import { ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { TicketsService } from './tickets.service'
 import { CreateTicketsDto } from './dto/create-tickets.dto'
-import { TicketResponseDto } from './dto/ticket-response.dto'
+import { PaginationMeta, TicketResponseDto } from './dto/ticket-response.dto'
+import { GetTicketsQueryDto } from './dto/get-tickets-query.dto'
 
 @ApiTags('Tickets')
 @Controller('tickets')
@@ -16,5 +17,14 @@ export class TicketsController {
   async createBulk(@Body() dto: CreateTicketsDto): Promise<{ data: TicketResponseDto[] }> {
     const data = await this.ticketsService.createBulk(dto)
     return { data }
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'List tickets with optional filters and pagination' })
+  @ApiOkResponse({ description: 'Paginated ticket list' })
+  async findAll(
+    @Query() query: GetTicketsQueryDto,
+  ): Promise<{ data: TicketResponseDto[]; meta: PaginationMeta }> {
+    return this.ticketsService.findAll(query);
   }
 }

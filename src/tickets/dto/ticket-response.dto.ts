@@ -31,3 +31,17 @@ export class TicketResponseDto {
     return dto
   }
 }
+
+export class PaginationMeta {
+  @ApiProperty()
+  total: number
+
+  @ApiProperty()
+  page: number
+
+  @ApiProperty()
+  limit: number
+
+  @ApiProperty()
+  totalPages: number
+}
