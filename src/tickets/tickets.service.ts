@@ -7,14 +7,13 @@ import {
 import { CreateTicketsDto } from './dto/create-tickets.dto'
 import { PaginationMeta, TicketResponseDto } from './dto/ticket-response.dto'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Truck } from 'src/trucks/entities/truck.entity'
-import { Repository } from 'typeorm/browser/repository/Repository.js'
+import { Truck } from '../trucks/entities/truck.entity'
 import { TicketsRepository } from './repositories/tickets.repository'
 import { SiteTicketCounterRepository } from './repositories/site-ticket-counter-repository'
 import { Ticket } from './entities/ticket.entity'
 import { SiteTicketCounter } from './entities/site-ticket-counter.entity'
 import { MaterialType } from './enums/material-type.enum'
-import { DataSource, In } from 'typeorm'
+import { DataSource, In, Repository } from 'typeorm'
 import { GetTicketsQueryDto } from './dto/get-tickets-query.dto'
 
 @Injectable()
@@ -29,7 +28,7 @@ export class TicketsService {
     private readonly counterRepository: SiteTicketCounterRepository,
   ) {}
 
-  async createBulk(dto: CreateTicketsDto): Promise<TicketResponseDto[]> {
+  async createBulkTickets(dto: CreateTicketsDto): Promise<TicketResponseDto[]> {
     const truck = await this.truckRepo.findOne({
       where: { id: dto.truckId },
       relations: ['site'],

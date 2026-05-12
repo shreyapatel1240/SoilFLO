@@ -10,12 +10,12 @@ import { GetTicketsQueryDto } from './dto/get-tickets-query.dto'
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
-  @Post('bulk tickets')
+  @Post('bulk-tickets')
   @ApiOperation({ summary: 'Create tickets in bulk for a truck' })
   @ApiCreatedResponse({ description: 'Tickets created', type: [TicketResponseDto] })
   @ApiNotFoundResponse({ description: 'Truck not found' })
-  async createBulk(@Body() dto: CreateTicketsDto): Promise<{ data: TicketResponseDto[] }> {
-    const data = await this.ticketsService.createBulk(dto)
+  async createBulkTickets(@Body() dto: CreateTicketsDto): Promise<{ data: TicketResponseDto[] }> {
+    const data = await this.ticketsService.createBulkTickets(dto)
     return { data }
   }
 
