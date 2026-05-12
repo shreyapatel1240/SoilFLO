@@ -8,6 +8,7 @@ import {
 } from 'typeorm'
 import { Site } from '../../sites/entities/site.entity'
 import { Truck } from '../../trucks/entities/truck.entity'
+import { MaterialType } from '../enums/material-type.enum'
 
 @Entity('tickets')
 @Unique('UQ_tickets_truck_dispatched', ['truckId', 'dispatchedAt'])
@@ -33,8 +34,8 @@ export class Ticket {
   @Column({ name: 'ticket_number' })
   ticketNumber: number
 
-  @Column({ default: 'Soil' })
-  material: string
+  @Column({ type: 'enum', enum: MaterialType, default: MaterialType.Soil })
+  material: MaterialType
 
   @Column({ name: 'dispatched_at', type: 'timestamptz' })
   dispatchedAt: Date

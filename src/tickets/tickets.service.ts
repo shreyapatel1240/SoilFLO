@@ -13,6 +13,7 @@ import { TicketsRepository } from './repositories/tickets.repository'
 import { SiteTicketCounterRepository } from './repositories/site-ticket-counter-repository'
 import { Ticket } from './entities/ticket.entity'
 import { SiteTicketCounter } from './entities/site-ticket-counter.entity'
+import { MaterialType } from './enums/material-type.enum'
 import { DataSource, In } from 'typeorm'
 import { GetTicketsQueryDto } from './dto/get-tickets-query.dto'
 
@@ -86,7 +87,7 @@ export class TicketsService {
           truckId: truck.id,
           siteId: truck.siteId,
           ticketNumber: nextNumber,
-          material: 'Soil',
+          material: MaterialType.Soil,
           dispatchedAt,
         });
       });

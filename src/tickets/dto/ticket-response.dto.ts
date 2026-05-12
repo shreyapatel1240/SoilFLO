@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Ticket } from '../entities/ticket.entity'
+import { MaterialType } from '../enums/material-type.enum'
 
 export class TicketResponseDto {
   @ApiProperty()
@@ -9,7 +10,7 @@ export class TicketResponseDto {
   ticketNumber: number
 
   @ApiProperty()
-  material: string
+  material: MaterialType
 
   @ApiProperty()
   dispatchedAt: string
